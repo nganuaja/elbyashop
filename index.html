@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Thermal Printer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .receipt {
+            width: 280px;
+            font-size: 12px;
+            padding: 10px;
+            border: 1px solid #000;
+        }
+        .text-center {
+            text-align: center;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row no-print">
+        <div class="col-md-8 offset-md-2">
+            <h3 class="text-center">Form Nota</h3>
+            <form id="notaForm">
+                <div class="mb-3">
+                    <label for="storeName" class="form-label">Nama Toko</label>
+                    <input type="text" class="form-control" id="storeName" placeholder="Masukkan Nama Toko">
+                </div>
+                <div class="mb-3">
+                    <label for="storeAddress" class="form-label">Alamat Toko</label>
+                    <textarea class="form-control" id="storeAddress" placeholder="Masukkan Alamat Toko"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="notaNumber" class="form-label">Nomor Nota</label>
+                    <input type="text" class="form-control" id="notaNumber" value="NT-001" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="notaDate" class="form-label">Tanggal</label>
+                    <input type="date" class="form-control" id="notaDate" value="">
+                </div>
+                <div id="item-list">
+                    <h5>Barang</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Nama Barang" id="itemName1">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control" placeholder="Jumlah" id="itemQty1">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control" placeholder="Harga" id="itemPrice1">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-success" onclick="addItem()">Tambah Barang</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="payment" class="form-label">Pembayaran</label>
+                    <input type="number" class="form-control" id="payment" placeholder="Masukkan Jumlah Pembayaran">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="generateNota()">Cetak Nota</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Nota yang akan dicetak -->
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <div id="receipt" class="receipt">
+                <h4 class="text-center" id="store-name"></h4>
+                <p class="text-center" id="store-address"></p>
+                <p>No Nota: <span id="nota-number"></span></p>
+                <p>Tanggal: <span id="nota-date"></span></p>
+                <hr>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Barang</th>
+                            <th>Jumlah</th>
+                            <th>Harga</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nota-items">
+                    </tbody>
+                </table>
+                <hr>
+                <p>Total: Rp <span id="total-price">0</span></p>
+                <p>Bayar: Rp <span id="total-payment">0</span></p>
+                <p>Kembalian: Rp <span id="change">0</span></p>
+                <p class="text-center">Terima Kasih!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JavaScript untuk mengisi data nota -->
+<script>
+    let itemCount = 1;
+    let totalPrice = 0;
+
+    function addItem() {
+        itemCount++;
+        const newItem = `
+            <div class="row mb-3" id="item-row${itemCount}">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Nama Barang" id="itemName${itemCount}">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control" placeholder="Jumlah" id="itemQty${itemCount}">
+                </div>
+                <div class="col-md-3">
+                    <input type="number" class="form-control" placeholder="Harga" id="itemPrice${itemCount}">
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-danger" onclick="removeItem(${itemCount})">Hapus</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('item-list').insertAdjacentHTML('beforeend', newItem);
+    }
+
+    function removeItem(id) {
+        const itemRow = document.getElementById(`item-row${id}`);
+        itemRow.remove();
+    }
+
+    function generateNota() {
+        // Ambil nilai dari form
+        const storeName = document.getElementById('storeName').value;
+        const storeAddress = document.getElementById('storeAddress').value;
+        const notaNumber = document.getElementById('notaNumber').value;
+        const notaDate = document.getElementById('notaDate').value;
+        const payment = document.getElementById('payment').value;
+        let itemsHTML = '';
+        totalPrice = 0;
+
+        for (let i = 1; i <= itemCount; i++) {
+            const itemName = document.getElementById(`itemName${i}`);
+            const itemQty = document.getElementById(`itemQty${i}`);
+            const itemPrice = document.getElementById(`itemPrice${i}`);
+            if (itemName && itemQty && itemPrice && itemName.value && itemQty.value && itemPrice.value) {
+                const total = itemQty.value * itemPrice.value;
+                totalPrice += total;
+
+                itemsHTML += `
+                    <tr>
+                        <td>${itemName.value}</td>
+                        <td>${itemQty.value}</td>
+                        <td>Rp ${Number(itemPrice.value).toLocaleString()}</td>
+                        <td>Rp ${Number(total).toLocaleString()}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        const change = payment - totalPrice;
+
+        // Masukkan data ke dalam elemen nota
+        document.getElementById('store-name').innerText = storeName;
+        document.getElementById('store-address').innerText = storeAddress;
+        document.getElementById('nota-number').innerText = notaNumber;
+        document.getElementById('nota-date').innerText = notaDate;
+        document.getElementById('nota-items').innerHTML = itemsHTML;
+        document.getElementById('total-price').innerText = totalPrice.toLocaleString();
+        document.getElementById('total-payment').innerText = Number(payment).toLocaleString();
+        document.getElementById('change').innerText = change.toLocaleString();
+
+        // Cetak Nota
+        window.print();
+    }
+
+    // Set tanggal otomatis
+    document.getElementById('notaDate').valueAsDate = new Date();
+</script>
+
+</body>
+</html>
