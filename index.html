@@ -1,189 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nota Thermal Printer</title>
-    <!-- Bootstrap CSS -->
+    <title>Elbya Shop</title>
+	<link rel="icon" href="assets/images/pakposkeren.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
     <style>
-        .receipt {
-            width: 280px;
-            font-size: 12px;
-            padding: 10px;
-            border: 1px solid #000;
-        }
-        .text-center {
-            text-align: center;
-        }
         @media print {
-            .no-print {
-                display: none;
+            body * {
+                visibility: hidden;
+            }
+            #notaModal, #notaModal * {
+                visibility: visible;
+            }
+            #notaModal {
+                position: absolute;
+                left: 0;
+                top: 0;
             }
         }
+        body {
+            font-family: Arial, sans-serif;
+			padding: 60px;
+        }
+        .nota-container {
+            width: 58mm;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px dashed #000;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            font-size: 16px;
+            margin: 0;
+            text-transform: uppercase;
+			font-weight: bold;
+        }
+        .header p {
+            margin: 0;
+            font-size: 11px;
+        }
+		.header .hr{
+            margin-bottom: -5px;
+            font-size: 11px;
+        }
+		.hr {
+			margin: 5px 0;
+		}
+		.borderless td, .borderless th {
+			border: none;
+			padding: 2px;
+			line-height: 1;
+			font-size: 12px;
+			margin-top: -10px;
+		}
+        .details, .items, .total {
+            font-size: 12px;
+        }
+        .items, .total {
+            margin-top: 10px;
+        }
+        .items table td, .total table td {
+            padding: 3px 0;
+        }
+        .items table td.right-align, .total table td.right-align {
+            text-align: right;
+        }
+		.kop .right-align {
+			text-align: right;
+		}
+        .footer {
+            text-align: center;
+            margin-top: -10px;
+            font-size: 10px;
+        }
+        .error-text {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+        }
+		@media only screen and (max-width: 768px) {
+			body {
+				padding: 50px 20px;
+			}	
+		}
     </style>
 </head>
 <body>
 
-<div class="container mt-5">
-    <div class="row no-print">
-        <div class="col-md-8 offset-md-2">
-            <h3 class="text-center">Form Nota</h3>
-            <form id="notaForm">
-                <div class="mb-3">
-                    <label for="storeName" class="form-label">Nama Toko</label>
-                    <input type="text" class="form-control" id="storeName" placeholder="Masukkan Nama Toko">
-                </div>
-                <div class="mb-3">
-                    <label for="storeAddress" class="form-label">Alamat Toko</label>
-                    <textarea class="form-control" id="storeAddress" placeholder="Masukkan Alamat Toko"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="notaNumber" class="form-label">Nomor Nota</label>
-                    <input type="text" class="form-control" id="notaNumber" value="NT-001" readonly>
-                </div>
-                <div class="mb-3">
-                    <label for="notaDate" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" id="notaDate" value="">
-                </div>
-                <div id="item-list">
-                    <h5>Barang</h5>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Nama Barang" id="itemName1">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control" placeholder="Jumlah" id="itemQty1">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" class="form-control" placeholder="Harga" id="itemPrice1">
-                        </div>
-                        <div class="col-md-3">
-                            <button type="button" class="btn btn-success" onclick="addItem()">Tambah Barang</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="payment" class="form-label">Pembayaran</label>
-                    <input type="number" class="form-control" id="payment" placeholder="Masukkan Jumlah Pembayaran">
-                </div>
-                <button type="button" class="btn btn-primary" onclick="generateNota()">Cetak Nota</button>
-            </form>
+<div class="container">
+    <h2 class="text-center">Form Transaksi</h2>
+    <form id="transactionForm">
+        <div class="mb-3">
+            <label for="storeName" class="form-label">Nama Toko</label>
+            <input type="text" class="form-control" id="storeName" name="storeName" value="Elbya Shop" placeholder="Masukkan nama toko" required>
         </div>
-    </div>
-
-    <!-- Nota yang akan dicetak -->
-    <div class="row mt-5">
-        <div class="col-md-8 offset-md-2">
-            <div id="receipt" class="receipt">
-                <h4 class="text-center" id="store-name"></h4>
-                <p class="text-center" id="store-address"></p>
-                <p>No Nota: <span id="nota-number"></span></p>
-                <p>Tanggal: <span id="nota-date"></span></p>
-                <hr>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Barang</th>
-                            <th>Jumlah</th>
-                            <th>Harga</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="nota-items">
-                    </tbody>
-                </table>
-                <hr>
-                <p>Total: Rp <span id="total-price">0</span></p>
-                <p>Bayar: Rp <span id="total-payment">0</span></p>
-                <p>Kembalian: Rp <span id="change">0</span></p>
-                <p class="text-center">Terima Kasih!</p>
+        <div class="mb-3">
+            <label for="storeAddress" class="form-label">Alamat Toko</label>
+            <input type="text" class="form-control" id="storeAddress" name="storeAddress" value="Gg. Mawar No. 9 Karanglo RT 05 RW 24 Tlogoadi Mlati Sleman 55286" placeholder="Masukkan alamat toko" required>
+        </div>
+		<div class="col-5 mb-3">
+            <label for="storePhone" class="form-label">No. Telepon</label>
+            <input type="text" class="form-control" id="storePhone" name="storePhone" value="081804566000" placeholder="Masukkan nomor telepon toko" required>
+        </div>
+		<hr>
+		<div class="row">
+			<div class="col-4 mb-3">
+				<label for="notaNumber" class="form-label">No. Nota</label>
+				<input type="text" class="form-control" id="notaNumber" name="notaNumber" value="LB-000001" placeholder="Masukkan nomor nota" required>
+			</div>
+			<div class="col-4 mb-3">
+				<label for="notaDate" class="form-label">Tanggal</label>
+				<input type="date" class="form-control" id="notaDate" required>
+			</div>
+			<div class="col-4 mb-3">
+				<label for="kasirName" class="form-label">Nama Kasir</label>
+				<input type="text" class="form-control" id="kasirName" name="kasirName" value="Pakposkeren" placeholder="Masukkan alamat toko" required>
+			</div>
+        </div>
+		<hr>
+		
+        <!-- Penambahan Barang Dinamis -->
+        <div id="itemsList">
+            <div class="row mb-3 item-row">
+                <div class="col-5">
+                    <label for="itemName" class="form-label">Nama Barang</label>
+                    <input type="text" class="form-control" name="itemName[]" placeholder="Nama Barang" required>
+                </div>
+                <div class="col-2">
+                    <label for="itemQty" class="form-label">Jml</label>
+                    <input type="number" class="form-control" name="itemQty[]" value="1" required>
+                </div>
+                <div class="col-3">
+                    <label for="itemPrice" class="form-label">Harga</label>
+                    <input type="number" class="form-control" name="itemPrice[]" required>
+                </div>
+                <div class="col-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger remove-item"><i class="far fa-trash-alt"></i></button>
+                </div>
             </div>
+        </div>
+        <button type="button" id="addItemBtn" class="btn btn-primary mb-3"><i class="fas fa-shopping-cart"></i> Tambah Barang</button>
+		<input type="hidden" id="totalQty" readonly>
+
+        <!-- Total, Bayar, Kembalian -->
+        <div class="col-6 mb-3">
+            <label for="totalPrice" class="form-label">Total Harga (Rp)</label>
+            <input type="text" class="form-control" id="totalPrice" readonly>
+        </div>
+        <div class="col-6 mb-3">
+            <label for="bayarAmount" class="form-label">Jumlah Bayar (Rp)</label>
+            <input type="number" class="form-control" id="bayarAmount" required>
+            <small id="bayarError" class="text-danger"></small>
+        </div>
+        <div class="col-6 mb-3">
+            <label for="kembaliAmount" class="form-label">Kembalian (Rp)</label>
+            <input type="text" class="form-control" id="kembaliAmount" readonly>
+        </div>
+		<hr>
+		<button type="reset" class="btn btn-warning" id="resetButton"><i class="fas fa-sync-alt"></i> Ulang</button>&nbsp;&nbsp;
+        <button type="button" id="cetakNotaBtn" class="btn btn-success"><i class="fas fa-print"></i> Cetak Nota</button>
+    </form>
+	<br>
+	<br>
+	
+    <!-- Tampil Nota -->
+    <div id="notaModal" class="nota-container" style="display: none;">
+        <div class="header">
+            <h1 id="modalStoreName">Nama Toko:</h1>
+            <p id="modalStoreAddress">Alamat Toko:</p>
+            <p id="modalStorePhone" class="hr">No. Telp:</p>
+        </div>
+		<hr class="hr">
+        <div class="details">
+            <table class="table table-sm borderless hr">
+                <tr>
+                    <td width="30%">No. Nota</td>
+                    <td width="70%">: <span id="modalNotaNumber">No. Nota</span></td>
+                </tr>
+                <tr>
+                    <td width="30%">Tanggal</td>
+                    <td width="70%">: <span id="modalNotaDate">Tanggal</span></td>
+                </tr>
+                <tr>
+                    <td width="30%">Kasir</td>
+                    <td width="70%">: <span id="modalKasirName">Kasir</span></td>
+                </tr>
+            </table>
+        </div>
+		<hr class="hr">
+		<table class="table table-sm borderless hr kop">
+			<tr>
+				<td class="" width="20%">Item</td>
+				<td class="right-align" width="40%">Harga</td>
+				<td class="right-align" width="40%">Jml</td>
+			</tr>
+		</table>
+		<hr class="hr">
+        <div class="items">
+            <table class="table table-sm borderless hr" id="modalItemsList">
+                
+            </table>
+        </div>
+		<hr class="hr">
+        <div class="total">
+            <table class="table table-sm borderless hr">
+                <tr>
+                    <td class="" width="10%">Qty:</td>
+                    <td class="right-align" width="37%">Total</td>
+                    <td class="right-align" width="15%">: Rp</td>
+                    <td class="right-align" width="38%"><span id="modalTotalPrice">000</span></td>
+                </tr>
+                <tr>
+					<td class="" width="10%"><span id="modalTotalQty"></span></td>
+                    <td class="right-align" width="37%">Bayar</td>
+                    <td class="right-align" width="15%">: Rp</td>
+                    <td class="right-align" width="38%"><span id="modalBayarAmount">000</span></td>
+                </tr>
+                <tr>
+					<td class="" width="10%"></td>
+                    <td class="right-align" width="37%">Kembali</td>
+                    <td class="right-align" width="15%">: Rp</td>
+                    <td class="right-align" width="38%"><span id="modalKembaliAmount">000</span></td>
+                </tr>
+            </table>
+        </div>
+		<hr>
+        <div class="footer">
+            <p># Terimakasih atas kunjungan Anda. #<br>
+            Barang yang sudah dibeli tidak dapat ditukar/dikembalikan.</p>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- JavaScript untuk mengisi data nota -->
 <script>
-    let itemCount = 1;
-    let totalPrice = 0;
+	// Format tanggal Indonesia
+	function formatTanggalIndo(tanggal) {
+		const date = new Date(tanggal);
+		const day = String(date.getDate()).padStart(2, '0');
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const year = date.getFullYear();
+		return `${day}-${month}-${year}`;
+	}
 
-    function addItem() {
-        itemCount++;
-        const newItem = `
-            <div class="row mb-3" id="item-row${itemCount}">
-                <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="Nama Barang" id="itemName${itemCount}">
+	// Set tanggal default saat halaman di-load
+	document.getElementById('notaDate').valueAsDate = new Date();
+
+	// Event listener untuk tombol reset
+	document.getElementById('resetButton').addEventListener('click', function() {
+		setTimeout(function() {
+			// Kembalikan tanggal ke default setelah reset
+			document.getElementById('notaDate').value = formatTanggalIndo(new Date());
+		}, 0);
+		// Kembalikan Qty ke default setelah reset
+		document.getElementById('totalQty').value = "";
+	});
+
+    // Format Rupiah
+    function formatRupiah(angka) {
+        return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // Format desimal
+    function formatDesimal(angka) {
+        return Number(angka).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+	function hitungTotal() {
+		let total = 0; // Menghitung total qty
+		let totalQty = 0; // Menghitung total qty
+
+		$('input[name="itemPrice[]"]').each(function(index) {
+			const qty = parseFloat($('input[name="itemQty[]"]').eq(index).val()) || 0;
+			total += $(this).val() * qty;
+			totalQty += qty;
+		});
+
+		$('#totalPrice').val(formatRupiah(total)); // Menampilkan total harga
+		$('#totalQty').val(totalQty); // Menampilkan total qty di input
+
+		const bayar = $('#bayarAmount').val();
+		if (bayar) {
+			const kembalian = bayar - total;
+			if (kembalian < 0) {
+				$('#bayarError').text('Jumlah bayar kurang!');
+				$('#kembaliAmount').val('');
+			} else {
+				$('#bayarError').text('');
+				$('#kembaliAmount').val(formatRupiah(kembalian));
+			}
+		}
+	}
+
+    $(document).on('input', 'input[name="itemPrice[]"], input[name="itemQty[]"], #bayarAmount', function() {
+        hitungTotal();
+    });
+
+    // Event Tombol Tambah Barang
+    $('#addItemBtn').click(function() {
+        $('#itemsList').append(`
+            <div class="row mb-3 item-row">
+                <div class="col-5">
+                    <input type="text" class="form-control" name="itemName[]" placeholder="Nama Barang" required>
                 </div>
-                <div class="col-md-2">
-                    <input type="number" class="form-control" placeholder="Jumlah" id="itemQty${itemCount}">
+                <div class="col-2">
+                    <input type="number" class="form-control" name="itemQty[]" value="1" required>
                 </div>
-                <div class="col-md-3">
-                    <input type="number" class="form-control" placeholder="Harga" id="itemPrice${itemCount}">
+                <div class="col-3">
+                    <input type="number" class="form-control" name="itemPrice[]" required>
                 </div>
-                <div class="col-md-3">
-                    <button type="button" class="btn btn-danger" onclick="removeItem(${itemCount})">Hapus</button>
+                <div class="col-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger remove-item"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
-        `;
-        document.getElementById('item-list').insertAdjacentHTML('beforeend', newItem);
-    }
+        `);
+    });
 
-    function removeItem(id) {
-        const itemRow = document.getElementById(`item-row${id}`);
-        itemRow.remove();
-    }
+    // Event Tombol Hapus Barang
+    $(document).on('click', '.remove-item', function() {
+        $(this).closest('.item-row').remove();
+        hitungTotal();
+    });
 
-    function generateNota() {
-        // Ambil nilai dari form
-        const storeName = document.getElementById('storeName').value;
-        const storeAddress = document.getElementById('storeAddress').value;
-        const notaNumber = document.getElementById('notaNumber').value;
-        const notaDate = document.getElementById('notaDate').value;
-        const payment = document.getElementById('payment').value;
-        let itemsHTML = '';
-        totalPrice = 0;
+    // Event Tombol Cetak Nota
+    $('#cetakNotaBtn').click(function() {
+        const storeName = $('#storeName').val();
+        const storeAddress = $('#storeAddress').val();
+        const storePhone = $('#storePhone').val();
+        const kasirName = $('#kasirName').val();
+        const notaNumber = $('#notaNumber').val();
+        const notaDate = $('#notaDate').val();
+        const totalQty = $('#totalQty').val();
+        const totalPrice = $('#totalPrice').val();
+        const bayarAmount = $('#bayarAmount').val();
+        const kembaliAmount = $('#kembaliAmount').val();
 
-        for (let i = 1; i <= itemCount; i++) {
-            const itemName = document.getElementById(`itemName${i}`);
-            const itemQty = document.getElementById(`itemQty${i}`);
-            const itemPrice = document.getElementById(`itemPrice${i}`);
-            if (itemName && itemQty && itemPrice && itemName.value && itemQty.value && itemPrice.value) {
-                const total = itemQty.value * itemPrice.value;
-                totalPrice += total;
+        // Data barang
+        let itemsList = '';
+        $('input[name="itemName[]"]').each(function(index) {
+            const itemName = $(this).val();
+            const itemQty = $('input[name="itemQty[]"]').eq(index).val();
+            const itemPrice = $('input[name="itemPrice[]"]').eq(index).val();
+            const itemTotal = itemQty * itemPrice;
+            itemsList += `
+				<tr>
+                    <td colspan="3">${itemName}</td>
+				</tr>
+				<tr>
+                    <td width="20%">${itemQty} x</td>
+                    <td class="right-align" width="40%">${formatDesimal(itemPrice)}</td>
+                    <td class="right-align" width="40%">${formatDesimal(itemTotal)}</td>
+                </tr>
+            `;
+        });
+		const storePhone2 = "Telp. " + storePhone;
+        $('#modalStoreName').text(storeName);
+        $('#modalStoreAddress').text(storeAddress);
+        $('#modalStorePhone').text(storePhone2);
+        $('#modalKasirName').text(kasirName);
+        $('#modalNotaNumber').text(notaNumber);
+        $('#modalNotaDate').text(formatTanggalIndo(notaDate));
+        $('#modalTotalQty').text(totalQty);
+        $('#modalTotalPrice').text(totalPrice);
+        $('#modalBayarAmount').text(formatRupiah(bayarAmount));
+        $('#modalKembaliAmount').text(formatRupiah(kembaliAmount));
+        $('#modalItemsList').html(itemsList);
 
-                itemsHTML += `
-                    <tr>
-                        <td>${itemName.value}</td>
-                        <td>${itemQty.value}</td>
-                        <td>Rp ${Number(itemPrice.value).toLocaleString()}</td>
-                        <td>Rp ${Number(total).toLocaleString()}</td>
-                    </tr>
-                `;
-            }
-        }
-
-        const change = payment - totalPrice;
-
-        // Masukkan data ke dalam elemen nota
-        document.getElementById('store-name').innerText = storeName;
-        document.getElementById('store-address').innerText = storeAddress;
-        document.getElementById('nota-number').innerText = notaNumber;
-        document.getElementById('nota-date').innerText = notaDate;
-        document.getElementById('nota-items').innerHTML = itemsHTML;
-        document.getElementById('total-price').innerText = totalPrice.toLocaleString();
-        document.getElementById('total-payment').innerText = Number(payment).toLocaleString();
-        document.getElementById('change').innerText = change.toLocaleString();
-
-        // Cetak Nota
+        $('#notaModal').show();
         window.print();
-    }
-
-    // Set tanggal otomatis
-    document.getElementById('notaDate').valueAsDate = new Date();
+    });
 </script>
 
 </body>
