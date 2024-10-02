@@ -10,157 +10,226 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
     <style>
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #notaModal, #notaModal * {
-                visibility: visible;
-            }
-            #notaModal {
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-        }
-        body {
-            font-family: Arial, sans-serif;
-			padding: 60px;
-        }
-        .nota-container {
-            width: 58mm;
-            margin: 0 auto;
-            padding: 10px;
-            border: 1px dashed #000;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .header h1 {
-            font-size: 16px;
-            margin: 0;
-            text-transform: uppercase;
-			font-weight: bold;
-        }
-        .header p {
-            margin: 0;
-            font-size: 11px;
-        }
-		.header .hr{
-            margin-bottom: -5px;
-            font-size: 11px;
-        }
-		.hr {
-			margin: 5px 0;
-		}
-		.borderless td, .borderless th {
-			border: none;
-			padding: 2px;
-			line-height: 1;
-			font-size: 12px;
-			margin-top: -10px;
-		}
-        .details, .items, .total {
-            font-size: 12px;
-        }
-        .items, .total {
-            margin-top: 10px;
-        }
-        .items table td, .total table td {
-            padding: 3px 0;
-        }
-        .items table td.right-align, .total table td.right-align {
-            text-align: right;
-        }
-		.kop .right-align {
-			text-align: right;
-		}
-        .footer {
-            text-align: center;
-            margin-top: -10px;
-            font-size: 10px;
-        }
-        .error-text {
-            color: red;
-            font-size: 12px;
-            margin-top: -10px;
-        }
-		@media only screen and (max-width: 768px) {
-			body {
-				padding: 50px 20px;
-			}	
-		}
+/* Gaya umum untuk tampilan layar besar (desktop) */
+body {
+    font-family: Arial, sans-serif;
+    padding: 60px;
+}
+
+/* Gaya untuk tampilan saat di-print */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #notaModal, #notaModal * {
+        visibility: visible;
+    }
+    #notaModal {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+/* Gaya untuk nota */
+.nota-container {
+    width: 58mm;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px dashed #000;
+}
+.header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+.header h1 {
+    font-size: 16px;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.header p {
+    margin: 0;
+    font-size: 11px;
+}
+.header .hr {
+    margin-bottom: -5px;
+    font-size: 11px;
+}
+label {
+	font-weight: bold;
+}
+.hr-text {
+    display: inline-block;
+    font-size: 12px; /* Ukuran teks kecil */
+    margin-bottom: -5px; /* Mengurangi jarak dengan hr */
+	color: #8700ff;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #000; /* Gaya garis */
+    margin-top: 0; /* Mengurangi jarak dengan teks */
+}
+
+.hr {
+    margin: 5px 0;
+}
+.borderless td, .borderless th {
+    border: none;
+    padding: 2px;
+    line-height: 1;
+    font-size: 12px;
+    margin-top: -10px;
+}
+.details, .items, .total {
+    font-size: 12px;
+}
+.items, .total {
+    margin-top: 10px;
+}
+.items table td, .total table td {
+    padding: 3px 0;
+}
+.items table td.right-align, .total table td.right-align {
+    text-align: right;
+}
+.kop .right-align {
+    text-align: right;
+}
+.footer {
+    text-align: center;
+    margin-top: -10px;
+    font-size: 10px;
+}
+.error-text {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+}
+input, select, textarea {
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+/* Media query untuk HP: Hanya mengubah input, tombol, dan teks, bukan nota */
+@media only screen and (max-width: 576px) {
+    body {
+        padding: 20px 10px;
+    }
+
+    /* Mengatur input, tombol, dan teks menjadi lebih kecil di HP */
+    .form-control {
+        font-size: 0.875rem; /* Menggunakan ukuran kecil */
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Untuk tombol kecil (btn-sm) di HP */
+    .btn {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    /* Penyesuaian ukuran teks secara umum di layar kecil */
+    label {
+        font-size: 14px;  /* Ukuran font teks umum lebih kecil */
+    }
+	
+	.hr-text {
+		font-size: 11px;
+	}
+
+    .error-text {
+        font-size: 10px;  /* Ukuran teks error lebih kecil */
+    }
+}
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 class="text-center">Form Transaksi</h2>
-    <form id="transactionForm">
-        <div class="mb-3">
-            <label for="storeName" class="form-label">Nama Toko</label>
-            <input type="text" class="form-control" id="storeName" name="storeName" value="Elbya Shop" placeholder="Masukkan nama toko" required>
-        </div>
-        <div class="mb-3">
-            <label for="storeAddress" class="form-label">Alamat Toko</label>
-            <input type="text" class="form-control" id="storeAddress" name="storeAddress" value="Gg. Mawar No. 9 Karanglo RT 05 RW 24 Tlogoadi Mlati Sleman 55286" placeholder="Masukkan alamat toko" required>
-        </div>
-		<div class="col-5 mb-3">
-            <label for="storePhone" class="form-label">No. Telepon</label>
-            <input type="text" class="form-control" id="storePhone" name="storePhone" value="088239049597" placeholder="Masukkan nomor telepon toko" required>
-        </div>
-		<hr>
+    <h2 class="text-center mb-4" style="text-decoration: ;">Form Transaksi</h2>
+	
+    <div class="hr-text">Identitas Toko</div>
+	<hr>
+	
+	<form id="transactionForm">
 		<div class="row">
-			<div class="col-4 mb-3">
+			<div class="col-6 col-sm-6 col-md-3 mb-3">
+				<label for="storeName" class="form-label">Nama Toko</label>
+				<input type="text" class="form-control" id="storeName" name="storeName" value="Elbya Shop" placeholder="Masukkan nama toko" required>
+			</div>
+			<div class="col-6 col-sm-6 col-md-3 mb-3">
+				<label for="storePhone" class="form-label">No. Telepon</label>
+				<input type="text" class="form-control" id="storePhone" name="storePhone" value="088239049597" placeholder="Masukkan nomor telepon toko" required>
+			</div>
+			<div class="mb-3">
+				<label for="storeAddress" class="form-label">Alamat Toko</label>
+				<input type="text" class="form-control" id="storeAddress" name="storeAddress" value="Gg. Mawar No. 9 Karanglo RT 05 RW 24 Tlogoadi Mlati Sleman 55286" placeholder="Masukkan alamat toko" required>
+			</div>
+		</div>
+		
+		<div class="hr-text">ID Nota</div>
+		<hr>
+		
+		<div class="row">
+			<div class="col-6 col-sm-6 col-md-3 mb-3">
 				<label for="notaNumber" class="form-label">No. Nota</label>
 				<input type="text" class="form-control" id="notaNumber" name="notaNumber" value="LB-000001" placeholder="Masukkan nomor nota" required>
 			</div>
-			<div class="col-4 mb-3">
+			<div class="col-6 col-sm-6 col-md-3 mb-3">
 				<label for="notaDate" class="form-label">Tanggal</label>
 				<input type="date" class="form-control" id="notaDate" required>
 			</div>
-			<div class="col-4 mb-3">
-				<label for="kasirName" class="form-label">Kasir</label>
+			<div class="col-6 col-sm-6 col-md-3 mb-3">
+				<label for="kasirName" class="form-label">Nama Kasir</label>
 				<input type="text" class="form-control" id="kasirName" name="kasirName" value="Pakposkeren" placeholder="Masukkan alamat toko" required>
 			</div>
         </div>
+		
+		<div class="hr-text">Transaksi Pembelian</div>
 		<hr>
 		
         <!-- Penambahan Barang Dinamis -->
         <div id="itemsList">
             <div class="row mb-3 item-row">
-                <div class="col-5">
+                <div class="col-sm-6 col-md-5 mb-1">
                     <label for="itemName" class="form-label">Nama Barang</label>
                     <input type="text" class="form-control" name="itemName[]" placeholder="Nama Barang" required>
                 </div>
-                <div class="col-2">
+                <div class="col-4 col-sm-2 col-md-1 mb-1">
                     <label for="itemQty" class="form-label">Jml</label>
                     <input type="number" class="form-control" name="itemQty[]" value="1" required>
                 </div>
-                <div class="col-3">
-                    <label for="itemPrice" class="form-label">Harga</label>
+                <div class="col-6 col-sm-3 col-md-2 mb-1">
+                    <label for="itemPrice" class="form-label">Harga (Rp)</label>
                     <input type="number" class="form-control" name="itemPrice[]" required>
                 </div>
-                <div class="col-2 d-flex align-items-end">
+                <div class="col-2 col-sm-1 col-md-3 mb-1 d-flex align-items-end">
                     <button type="button" class="btn btn-danger remove-item"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
         </div>
-        <button type="button" id="addItemBtn" class="btn btn-primary mb-3"><i class="fas fa-shopping-cart"></i> Tambah Barang</button>
 		<input type="hidden" id="totalQty" readonly>
-
+        <button type="button" id="addItemBtn" class="btn btn-primary mb-3"><i class="fas fa-shopping-cart"></i> Tambah Barang</button>
+		<br>
+		
+		<div class="hr-text">Total Transaksi</div>
+		<hr>
+		
         <!-- Total, Bayar, Kembalian -->
-        <div class="col-6 mb-3">
+        <div class="col-12 col-sm-6 col-md-4 mb-3">
             <label for="totalPrice" class="form-label">Total Harga (Rp)</label>
             <input type="text" class="form-control" id="totalPrice" readonly>
         </div>
-        <div class="col-6 mb-3">
+        <div class="col-12 col-sm-6 col-md-4 mb-3">
             <label for="bayarAmount" class="form-label">Jumlah Bayar (Rp)</label>
             <input type="number" class="form-control" id="bayarAmount" required>
             <small id="bayarError" class="text-danger"></small>
         </div>
-        <div class="col-6 mb-3">
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
             <label for="kembaliAmount" class="form-label">Kembalian (Rp)</label>
             <input type="text" class="form-control" id="kembaliAmount" readonly>
         </div>
@@ -307,16 +376,19 @@
     $('#addItemBtn').click(function() {
         $('#itemsList').append(`
             <div class="row mb-3 item-row">
-                <div class="col-5">
+                <div class="col-sm-6 col-md-5 mb-1">
+                    <label for="itemName" class="form-label">Nama Barang</label>
                     <input type="text" class="form-control" name="itemName[]" placeholder="Nama Barang" required>
                 </div>
-                <div class="col-2">
+                <div class="col-4 col-sm-2 col-md-1 mb-1">
+                    <label for="itemQty" class="form-label">Jml</label>
                     <input type="number" class="form-control" name="itemQty[]" value="1" required>
                 </div>
-                <div class="col-3">
+                <div class="col-6 col-sm-3 col-md-2 mb-1">
+                    <label for="itemPrice" class="form-label">Harga (Rp)</label>
                     <input type="number" class="form-control" name="itemPrice[]" required>
                 </div>
-                <div class="col-2 d-flex align-items-end">
+                <div class="col-2 col-sm-1 col-md-3 mb-1 d-flex align-items-end">
                     <button type="button" class="btn btn-danger remove-item"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
