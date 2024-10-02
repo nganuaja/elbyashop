@@ -319,15 +319,25 @@ input, select, textarea {
 		return `${day}-${month}-${year}`;
 	}
 
+	// Fungsi untuk mendapatkan tanggal dalam format yang benar untuk input
+	function formatDateForInput(tanggal) {
+		const date = new Date(tanggal);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`; // Format yyyy-mm-dd untuk input type="date"
+	}
+
 	// Set tanggal default saat halaman di-load
-	document.getElementById('notaDate').valueAsDate = new Date();
+	document.getElementById('notaDate').value = formatDateForInput(new Date());
 
 	// Event listener untuk tombol reset
 	document.getElementById('resetButton').addEventListener('click', function() {
 		setTimeout(function() {
 			// Kembalikan tanggal ke default setelah reset
-			document.getElementById('notaDate').value = formatTanggalIndo(new Date());
+			document.getElementById('notaDate').value = formatDateForInput(new Date());
 		}, 0);
+		
 		// Kembalikan Qty ke default setelah reset
 		document.getElementById('totalQty').value = "";
 	});
