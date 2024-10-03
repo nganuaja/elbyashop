@@ -179,9 +179,13 @@ input, select, textarea {
 		<hr>
 		
 		<div class="row">
+			<!-- <div class="col-6 col-sm-6 col-md-3 mb-3"> -->
+				<!-- <label for="notaNumber" class="form-label">No. Nota</label> -->
+				<!-- <input type="text" class="form-control" id="notaNumber" name="notaNumber" value="SJ-0100201" placeholder="Masukkan nomor nota" required> -->
+			<!-- </div> -->
 			<div class="col-6 col-sm-6 col-md-3 mb-3">
 				<label for="notaNumber" class="form-label">No. Nota</label>
-				<input type="text" class="form-control" id="notaNumber" name="notaNumber" value="SJ-0100201" placeholder="Masukkan nomor nota" required>
+				<input type="text" class="form-control" id="notaNumber" name="notaNumber" placeholder="Masukkan nomor nota" required readonly>
 			</div>
 			<div class="col-6 col-sm-6 col-md-3 mb-3">
 				<label for="notaDate" class="form-label">Tanggal</label>
@@ -314,6 +318,23 @@ input, select, textarea {
 </div>
 
 <script>
+	// Fungsi untuk membuat nomor nota otomatis
+	function generateNotaNumber() {
+		const now = new Date();
+		
+		const month = String(now.getMonth() + 1).padStart(2, '0'); // Bulan (2 digit)
+		const day = String(now.getDate()).padStart(2, '0');        // Tanggal (2 digit)
+		const hour = String(now.getHours()).padStart(2, '0');      // Jam (2 digit)
+		const minute = String(now.getMinutes()).padStart(2, '0');  // Menit (2 digit)
+		
+		// Format nomor nota: SJ-0bulan(tanggal)jammenit
+		<!-- const notaNumber = `SJ-0${month}${day}${hour}${minute}`; -->
+		const notaNumber = `0${month}${day}${hour}${minute}`;
+		
+		// Set nilai nomor nota ke input
+		document.getElementById('notaNumber').value = notaNumber;
+	}
+
 	// Format tanggal Indonesia
 	function formatTanggalIndo(tanggal) {
 		const date = new Date(tanggal);
@@ -334,7 +355,8 @@ input, select, textarea {
 
 	// Set tanggal default saat halaman di-load
 	document.getElementById('notaDate').value = formatDateForInput(new Date());
-
+	generateNotaNumber();
+	
 	// Event listener untuk tombol reset
 	document.getElementById('resetButton').addEventListener('click', function() {
 		setTimeout(function() {
