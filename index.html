@@ -10,145 +10,131 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
     <style>
-/* Gaya umum untuk tampilan layar besar (desktop) */
-body {
-    font-family: Arial, sans-serif;
-    padding: 60px;
-}
-
-/* Gaya untuk tampilan saat di-print */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    #notaModal, #notaModal * {
-        visibility: visible;
-    }
-    #notaModal {
-        position: absolute;
-        left: 0;
-        top: 0;
-	width: 100%;
-	font-size: 12px;
-	padding: 0;
-	border: 0;
-    }
-}
-
-/* Gaya untuk nota */
-.nota-container {
-    width: 58mm;
-    margin: 0 auto;
-    padding: 10px;
-    border: 1px dashed #000;
-}
-.header {
-    text-align: center;
-    margin-bottom: 10px;
-}
-.header h1 {
-    font-size: 16px;
-    margin: 0;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-.header p {
-    margin: 0;
-    font-size: 11px;
-}
-.header .hr {
-    margin-bottom: -5px;
-    font-size: 11px;
-}
-label {
-	font-weight: bold;
-}
-.hr-text {
-    display: inline-block;
-    font-size: 12px; /* Ukuran teks kecil */
-    margin-bottom: -5px; /* Mengurangi jarak dengan hr */
-	color: #8700ff;
-}
-
-hr {
-    border: none;
-    border-top: 1px solid #000; /* Gaya garis */
-    margin-top: 0; /* Mengurangi jarak dengan teks */
-}
-
-.hr {
-    margin: 5px 0;
-}
-.borderless td, .borderless th {
-    border: none;
-    padding: 2px;
-    line-height: 1;
-    font-size: 12px;
-    margin-top: -10px;
-}
-.details, .items, .total {
-    font-size: 12px;
-}
-.items, .total {
-    margin-top: 10px;
-}
-.items table td, .total table td {
-    padding: 3px 0;
-}
-.items table td.right-align, .total table td.right-align {
-    text-align: right;
-}
-.kop .right-align {
-    text-align: right;
-}
-.footer {
-    text-align: center;
-    margin-top: -10px;
-    font-size: 10px;
-}
-.error-text {
-    color: red;
-    font-size: 12px;
-    margin-top: -10px;
-}
-input, select, textarea {
-    font-size: 16px;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-}
-/* Media query untuk HP: Hanya mengubah input, tombol, dan teks, bukan nota */
-@media only screen and (max-width: 576px) {
-    body {
-        padding: 20px 10px;
-    }
-
-    /* Mengatur input, tombol, dan teks menjadi lebih kecil di HP */
-    .form-control {
-        font-size: 0.875rem; /* Menggunakan ukuran kecil */
-        padding: 0.25rem 0.5rem;
-    }
-
-    /* Untuk tombol kecil (btn-sm) di HP */
-    .btn {
-        font-size: 0.875rem;
-        padding: 0.25rem 0.5rem;
-    }
-
-    /* Penyesuaian ukuran teks secara umum di layar kecil */
-    label {
-        font-size: 14px;  /* Ukuran font teks umum lebih kecil */
-    }
-	
-	.hr-text {
-		font-size: 11px;
+	body {
+		font-family: Arial, sans-serif;
+		padding: 60px;
 	}
 
-    .error-text {
-        font-size: 10px;  /* Ukuran teks error lebih kecil */
-    }
-}
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		#notaModal, #notaModal * {
+			visibility: visible;
+		}
+		#notaModal {
+			position: absolute;
+			left: 0;
+			top: 0;
+		width: 100%;
+		<!-- font-size: 12px; -->
+		padding: 0;
+		border: 0;
+		}
+	}
 
+	.nota-container {
+		width: 58mm;
+		margin: 0 auto;
+		padding: 10px;
+		border: 1px dashed #000;
+	}
+	.header {
+		text-align: center;
+		margin-bottom: 10px;
+	}
+	.header h1 {
+		font-size: 16px;
+		margin: 0;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+	.header p {
+		margin: 0;
+		font-size: 11px;
+	}
+	.header .hr {
+		margin-bottom: -5px;
+		font-size: 11px;
+	}
+	label {
+		font-weight: bold;
+	}
+	.hr-text {
+		display: inline-block;
+		font-size: 12px;
+		margin-bottom: -5px;
+		color: #8700ff;
+	}
+	hr {
+		border: none;
+		border-top: 1px solid #000;
+		margin-top: 0;
+	}
+	.hr {
+		margin: 5px 0;
+	}
+	.borderless td, .borderless th {
+		border: none;
+		padding: 2px;
+		line-height: 1;
+		font-size: 12px;
+		margin-top: -10px;
+	}
+	.details, .items, .total {
+		font-size: 12px;
+	}
+	.items, .total {
+		margin-top: 10px;
+	}
+	.items table td, .total table td {
+		padding: 3px 0;
+	}
+	.items table td.right-align, .total table td.right-align {
+		text-align: right;
+	}
+	.kop .right-align {
+		text-align: right;
+	}
+	.footer {
+		text-align: center;
+		margin-top: -10px;
+		font-size: 10px;
+	}
+	.error-text {
+		color: red;
+		font-size: 12px;
+		margin-top: -10px;
+	}
+	input, select, textarea {
+		font-size: 16px;
+		padding: 10px;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	@media only screen and (max-width: 576px) {
+		body {
+			padding: 20px 10px;
+		}
+		.form-control {
+			font-size: 0.875rem;
+			padding: 0.25rem 0.5rem;
+		}
+		.btn {
+			font-size: 0.875rem;
+			padding: 0.25rem 0.5rem;
+		}
+		label {
+			font-size: 14px;
+		}
+		.hr-text {
+			font-size: 11px;
+		}
+		.error-text {
+			font-size: 10px;
+		}
+	}
     </style>
 </head>
 <body>
@@ -179,10 +165,6 @@ input, select, textarea {
 		<hr>
 		
 		<div class="row">
-			<!-- <div class="col-6 col-sm-6 col-md-3 mb-3"> -->
-				<!-- <label for="notaNumber" class="form-label">No. Nota</label> -->
-				<!-- <input type="text" class="form-control" id="notaNumber" name="notaNumber" value="SJ-0100201" placeholder="Masukkan nomor nota" required> -->
-			<!-- </div> -->
 			<div class="col-6 col-sm-6 col-md-3 mb-3">
 				<label for="notaNumber" class="form-label">No. Nota</label>
 				<input type="text" class="form-control" id="notaNumber" name="notaNumber" placeholder="Masukkan nomor nota" required readonly>
@@ -201,27 +183,30 @@ input, select, textarea {
 		<hr>
 		
         <!-- Penambahan Barang Dinamis -->
-        <div id="itemsList">
-            <div class="row mb-3 item-row">
-                <div class="col-sm-6 col-md-5 mb-1">
-                    <label for="itemName" class="form-label">Nama Barang</label>
-                    <input type="text" class="form-control" name="itemName[]" placeholder="Nama Barang" required>
-                </div>
-                <div class="col-4 col-sm-2 col-md-1 mb-1">
-                    <label for="itemQty" class="form-label">Jml</label>
-                    <input type="number" class="form-control" name="itemQty[]" value="1" required>
-                </div>
-                <div class="col-6 col-sm-3 col-md-2 mb-1">
-                    <label for="itemPrice" class="form-label">Harga (Rp)</label>
-                    <input type="number" class="form-control" name="itemPrice[]" required>
-                </div>
-                <div class="col-2 col-sm-1 col-md-3 mb-1 d-flex align-items-end">
-                    <button type="button" class="btn btn-danger remove-item"><i class="far fa-trash-alt"></i></button>
-                </div>
-            </div>
-        </div>
+		<div id="itemsList">
+			<div class="row mb-3 item-row">
+				<div class="col-sm-6 col-md-5 mb-1">
+					<label for="itemName" class="form-label">Nama Barang</label>
+					<select class="form-control itemName" name="itemName[]" required>
+						<option value="">Pilih Barang</option>
+						<!-- Opsi akan diisi dengan data dari Google Sheets -->
+					</select>
+				</div>
+				<div class="col-4 col-sm-2 col-md-1 mb-1">
+					<label for="itemQty" class="form-label">Jml</label>
+					<input type="number" class="form-control" name="itemQty[]" value="1" required>
+				</div>
+				<div class="col-6 col-sm-3 col-md-2 mb-1">
+					<label for="itemPrice" class="form-label">Harga (Rp)</label>
+					<input type="number" class="form-control itemPrice" name="itemPrice[]" required>
+				</div>
+				<div class="col-2 col-sm-1 col-md-3 mb-1 d-flex align-items-end">
+					<button type="button" class="btn btn-danger remove-item"><i class="far fa-trash-alt"></i></button>
+				</div>
+			</div>
+		</div>
 		<input type="hidden" id="totalQty" readonly>
-        <button type="button" id="addItemBtn" class="btn btn-primary mb-3"><i class="fas fa-shopping-cart"></i> Tambah Barang</button>
+		<button type="button" id="addItemBtn" class="btn btn-primary mb-3"><i class="fas fa-shopping-cart"></i> Tambah Barang</button>
 		<br>
 		
 		<div class="hr-text">Total Transaksi</div>
@@ -318,6 +303,45 @@ input, select, textarea {
 </div>
 
 <script>
+    // Ganti dengan URL API dari Google Apps Script yang telah di-deploy
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbyc5WqJIXucMB6eudIg-pRzijGLglQIay0Es9uzRU2WTvi1pfevkTfIheSQNEV2_cR7/exec';
+
+    // Fungsi untuk mengambil data barang dari Google Sheets dan mengisi opsi di select
+    function loadItems() {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const itemNameSelects = document.querySelectorAll('.itemName');
+                
+                itemNameSelects.forEach(select => {
+                    const selectedValue = select.value;  // Simpan barang yang sudah dipilih
+                    
+                    select.innerHTML = '<option value="">Pilih Barang</option>'; // Reset isi sebelumnya
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.name;
+                        option.textContent = item.name;
+                        option.setAttribute('data-price', item.price);
+                        select.appendChild(option);
+                    });
+
+                    // Kembalikan barang yang sudah dipilih
+                    select.value = selectedValue;
+
+                    // Set event listener untuk mengisi harga secara otomatis saat barang dipilih
+                    select.addEventListener('change', function() {
+                        const selectedItem = data.find(item => item.name === this.value);
+                        if (selectedItem) {
+                            const priceInput = this.closest('.item-row').querySelector('.itemPrice');
+                            priceInput.value = selectedItem.price;
+                        }
+                        hitungTotal();  // Hitung total harga setiap kali barang dipilih
+                    });
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
 	// Fungsi untuk membuat nomor nota otomatis
 	function generateNotaNumber() {
 		const now = new Date();
@@ -359,14 +383,8 @@ input, select, textarea {
 	
 	// Event listener untuk tombol reset
 	document.getElementById('resetButton').addEventListener('click', function() {
-		setTimeout(function() {
-			// Kembalikan tanggal ke default setelah reset
-			document.getElementById('notaDate').value = formatDateForInput(new Date());
-		}, 0);
-		
-		// Kembalikan Qty ke default setelah reset
-		document.getElementById('totalQty').value = "";
-	});
+	location.reload(); // Memuat ulang halaman
+    });
 
     // Format Rupiah
     function formatRupiah(angka) {
@@ -378,112 +396,128 @@ input, select, textarea {
         return Number(angka).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-	function hitungTotal() {
-		let total = 0; // Menghitung total qty
-		let totalQty = 0; // Menghitung total qty
+    // Fungsi untuk menghitung total harga dan total qty
+    function hitungTotal() {
+        let total = 0;
+        let totalQty = 0;
 
-		$('input[name="itemPrice[]"]').each(function(index) {
-			const qty = parseFloat($('input[name="itemQty[]"]').eq(index).val()) || 0;
-			total += $(this).val() * qty;
-			totalQty += qty;
-		});
+        $('input[name="itemPrice[]"]').each(function(index) {
+            const qty = parseFloat($('input[name="itemQty[]"]').eq(index).val()) || 0;
+            total += $(this).val() * qty;
+            totalQty += qty;
+        });
 
-		$('#totalPrice').val(formatRupiah(total)); // Menampilkan total harga
-		$('#totalQty').val(totalQty); // Menampilkan total qty di input
+        $('#totalPrice').val(formatRupiah(total)); // Menampilkan total harga
+        $('#totalQty').val(totalQty); // Menampilkan total qty di input
 
-		const bayar = $('#bayarAmount').val();
-		if (bayar) {
-			const kembalian = bayar - total;
-			if (kembalian < 0) {
-				$('#bayarError').text('Jumlah bayar kurang!');
-				$('#kembaliAmount').val('');
-			} else {
-				$('#bayarError').text('');
-				$('#kembaliAmount').val(formatRupiah(kembalian));
-			}
-		}
-	}
-
+        const bayar = $('#bayarAmount').val();
+        if (bayar) {
+            const kembalian = bayar - total;
+            if (kembalian < 0) {
+                $('#bayarError').text('Jumlah bayar kurang!');
+                $('#kembaliAmount').val('');
+            } else {
+                $('#bayarError').text('');
+                $('#kembaliAmount').val(formatRupiah(kembalian));
+            }
+        }
+    }
+	
     $(document).on('input', 'input[name="itemPrice[]"], input[name="itemQty[]"], #bayarAmount', function() {
         hitungTotal();
     });
 
-    // Event Tombol Tambah Barang
-    $('#addItemBtn').click(function() {
-        $('#itemsList').append(`
+    // Event listener untuk menambah barang
+    $('#addItemBtn').on('click', function() {
+        const newItemRow = `
             <div class="row mb-3 item-row">
                 <div class="col-sm-6 col-md-5 mb-1">
                     <label for="itemName" class="form-label">Nama Barang</label>
-                    <input type="text" class="form-control" name="itemName[]" placeholder="Nama Barang" required>
+                    <select class="form-control itemName" name="itemName[]" required>
+                        <option value="">Pilih Barang</option>
+                    </select>
                 </div>
                 <div class="col-4 col-sm-2 col-md-1 mb-1">
                     <label for="itemQty" class="form-label">Jml</label>
-                    <input type="number" class="form-control" name="itemQty[]" value="1" required>
+                    <input type="number" class="form-control itemQty" name="itemQty[]" value="1" required>
                 </div>
                 <div class="col-6 col-sm-3 col-md-2 mb-1">
                     <label for="itemPrice" class="form-label">Harga (Rp)</label>
-                    <input type="number" class="form-control" name="itemPrice[]" required>
+                    <input type="number" class="form-control itemPrice" name="itemPrice[]" readonly required>
                 </div>
                 <div class="col-2 col-sm-1 col-md-3 mb-1 d-flex align-items-end">
                     <button type="button" class="btn btn-danger remove-item"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
-        `);
+        `;
+        $('#itemsList').append(newItemRow);
+        loadItems(); // Isi ulang opsi barang untuk baris baru
     });
 
-    // Event Tombol Hapus Barang
+    // Event untuk menghapus barang
     $(document).on('click', '.remove-item', function() {
         $(this).closest('.item-row').remove();
+        hitungTotal(); // Hitung ulang total setelah barang dihapus
+    });
+
+    // Event listener untuk menghitung ulang total harga saat jumlah barang diubah
+    $(document).on('input', 'input[name="itemQty[]"]', function() {
         hitungTotal();
     });
 
-    // Event Tombol Cetak Nota
-    $('#cetakNotaBtn').click(function() {
-        const storeName = $('#storeName').val();
-        const storeAddress = $('#storeAddress').val();
-        const storePhone = $('#storePhone').val();
-        const kasirName = $('#kasirName').val();
-        const notaNumber = $('#notaNumber').val();
-        const notaDate = $('#notaDate').val();
-        const totalQty = $('#totalQty').val();
-        const totalPrice = $('#totalPrice').val();
-        const bayarAmount = $('#bayarAmount').val();
-        const kembaliAmount = $('#kembaliAmount').val();
-
-        // Data barang
-        let itemsList = '';
-        $('input[name="itemName[]"]').each(function(index) {
-            const itemName = $(this).val();
-            const itemQty = $('input[name="itemQty[]"]').eq(index).val();
-            const itemPrice = $('input[name="itemPrice[]"]').eq(index).val();
-            const itemTotal = itemQty * itemPrice;
-            itemsList += `
-				<tr>
-                    <td colspan="3">${itemName}</td>
-				</tr>
-				<tr>
-                    <td width="20%">${itemQty} x</td>
-                    <td class="right-align" width="40%">${formatDesimal(itemPrice)}</td>
-                    <td class="right-align" width="40%">${formatDesimal(itemTotal)}</td>
-                </tr>
-            `;
-        });
-		const storePhone2 = "Telp. " + storePhone;
-        $('#modalStoreName').text(storeName);
-        $('#modalStoreAddress').text(storeAddress);
-        $('#modalStorePhone').text(storePhone2);
-        $('#modalKasirName').text(kasirName);
-        $('#modalNotaNumber').text(notaNumber);
-        $('#modalNotaDate').text(formatTanggalIndo(notaDate));
-        $('#modalTotalQty').text(totalQty);
-        $('#modalTotalPrice').text(totalPrice);
-        $('#modalBayarAmount').text(formatRupiah(bayarAmount));
-        $('#modalKembaliAmount').text(formatRupiah(kembaliAmount));
-        $('#modalItemsList').html(itemsList);
-
-        $('#notaModal').show();
-        window.print();
+    // Jalankan fungsi loadItems pertama kali saat halaman dimuat
+    $(document).ready(function() {
+        loadItems();
     });
+
+	// Event Tombol Cetak Nota
+$('#cetakNotaBtn').click(function() {
+    const storeName = $('#storeName').val();
+    const storeAddress = $('#storeAddress').val();
+    const storePhone = $('#storePhone').val();
+    const kasirName = $('#kasirName').val();
+    const notaNumber = $('#notaNumber').val();
+    const notaDate = $('#notaDate').val();
+    const totalQty = $('#totalQty').val();
+    const totalPrice = $('#totalPrice').val();
+    const bayarAmount = $('#bayarAmount').val();
+    const kembaliAmount = $('#kembaliAmount').val();
+
+    // Data barang
+    let itemsList = '';
+    $('select[name="itemName[]"]').each(function(index) {  // Ubah dari input ke select
+        const itemName = $(this).find('option:selected').text();  // Ambil teks barang yang dipilih
+        const itemQty = $('input[name="itemQty[]"]').eq(index).val();
+        const itemPrice = $('input[name="itemPrice[]"]').eq(index).val();
+        const itemTotal = itemQty * itemPrice;
+        itemsList += `
+            <tr>
+                <td colspan="3">${itemName}</td>
+            </tr>
+            <tr>
+                <td width="20%">${itemQty} x</td>
+                <td class="right-align" width="40%">${formatDesimal(itemPrice)}</td>
+                <td class="right-align" width="40%">${formatDesimal(itemTotal)}</td>
+            </tr>
+        `;
+    });
+
+    const storePhone2 = "Telp. " + storePhone;
+    $('#modalStoreName').text(storeName);
+    $('#modalStoreAddress').text(storeAddress);
+    $('#modalStorePhone').text(storePhone2);
+    $('#modalKasirName').text(kasirName);
+    $('#modalNotaNumber').text(notaNumber);
+    $('#modalNotaDate').text(formatTanggalIndo(notaDate));
+    $('#modalTotalQty').text(totalQty);
+    $('#modalTotalPrice').text(totalPrice);
+    $('#modalBayarAmount').text(formatRupiah(bayarAmount));
+    $('#modalKembaliAmount').text(formatRupiah(kembaliAmount));
+    $('#modalItemsList').html(itemsList);
+
+    $('#notaModal').show();
+    window.print();
+});
 </script>
 
 </body>
